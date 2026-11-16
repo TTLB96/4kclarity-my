@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>4K Clarity · How can we help?</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff; --text:#111; --muted:#8e8e93; --line:#efefef; --soft:#f6f6f7;
+    --a:#ff9e34; --b:#ff406f; --grad:linear-gradient(90deg,var(--a),var(--b));
+    --ok:#22c55e; --warn:#f59e0b; --down:#ef4444;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  body{padding:calc(env(safe-area-inset-top) + 22px) 22px calc(env(safe-area-inset-bottom) + 28px)}
+  .wrap{max-width:420px;margin:0 auto}
+  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+  a{color:inherit}
+
+  /* top */
+  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px}
+  .top img{height:26px;display:block}
+  .status{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+  .status i{width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .status.warn i{background:var(--warn)} .status.down i{background:var(--down)}
+
+  /* sophie */
+  .sophie{display:flex;align-items:center;gap:12px;margin-bottom:28px;min-height:44px}
+  .sophie svg{width:44px;height:44px;flex:none}
+  .say{font-size:17px;font-weight:600;line-height:1.35}
+  .say b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .dots{display:inline-flex;gap:4px}
+  .dots i{width:5px;height:5px;border-radius:50%;background:#c7c7cc;animation:d 1s infinite}
+  .dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+  @keyframes d{0%,60%,100%{opacity:.4}30%{opacity:1}}
+  .eyes{transform-origin:22px 22px;animation:blink 4.5s infinite}
+  @keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+
+  /* views */
+  .view{display:none;animation:in .2s ease}
+  .view.on{display:block}
+  @keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .back{font-size:14px;color:var(--muted);margin-bottom:18px;padding:4px 0}
+
+  /* list rows */
+  .list{border-top:1px solid var(--line)}
+  .row{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left;padding:18px 2px;border-bottom:1px solid var(--line);font-size:17px;font-weight:500}
+  .row::after{content:"›";color:#c7c7cc;font-size:22px;line-height:1}
+  .row:active{opacity:.5}
+
+  /* stepper */
+  .stp{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line)}
+  .stp:first-child{border-top:1px solid var(--line)}
+  .stp .k{font-size:15px;color:var(--muted)}
+  .ctrl{display:flex;align-items:center;gap:16px}
+  .pm{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);font-size:20px;line-height:1;display:grid;place-items:center}
+  .pm.plus{border:0;background:var(--grad);color:#fff}
+  .pm.plus:not(:disabled){animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,64,111,.35)}60%{box-shadow:0 0 0 9px rgba(255,64,111,0)}}
+  .pm:disabled{opacity:.25;animation:none}
+  .num{min-width:28px;text-align:center;font-size:22px;font-weight:700}
+  .num.pop{animation:pop .3s}
+  @keyframes pop{50%{transform:scale(1.25)}}
+  .nudge{display:block;font-size:13px;font-weight:600;padding:8px 0 0;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:right;width:100%}
+  .nudge.max{background:none;color:var(--ok);cursor:default}
+  .stpwrap{margin-bottom:6px}
+
+  .price{text-align:center;margin:34px 0 26px}
+  .price .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;color:#fff;background:var(--grad);padding:4px 10px;border-radius:99px;margin-bottom:12px}
+  .price .tag:empty{display:none}
+  .big{font-size:52px;font-weight:700;letter-spacing:-2px;line-height:1}
+  .per{color:var(--muted);font-size:14px;margin-top:8px}
+  .save{font-size:14px;font-weight:600;color:var(--ok);margin-top:6px;min-height:18px}
+  .meter{height:3px;background:var(--line);border-radius:3px;margin:16px auto 0;width:60%;overflow:hidden}
+  .meter i{display:block;height:100%;width:0;background:var(--grad);transition:width .45s}
+
+  /* buttons */
+  .btn{display:block;width:100%;text-align:center;border-radius:99px;padding:16px;font-size:16px;font-weight:600;text-decoration:none;margin-top:10px}
+  .btn.main{background:var(--text);color:#fff}
+  .btn.grad{background:var(--grad);color:#fff}
+  .btn.line{border:1px solid var(--line)}
+  .link{display:block;text-align:center;font-size:14px;color:var(--muted);margin-top:22px;text-decoration:none}
+  .link b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hint{font-size:13px;color:var(--muted);text-align:center;margin-top:12px}
+
+  /* summary */
+  .sum{border-top:1px solid var(--line);margin-bottom:22px}
+  .sum div{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .sum span{color:var(--muted)}
+  .sum .t{font-size:20px;font-weight:700}
+
+  /* chips + steps */
+  .chips{display:flex;gap:6px;overflow-x:auto;margin-bottom:16px;scrollbar-width:none}
+  .chip{padding:8px 14px;border-radius:99px;border:1px solid var(--line);font-size:14px;white-space:nowrap}
+  .chip.sel{border-color:var(--text);background:var(--text);color:#fff}
+  ol.steps{list-style:none;counter-reset:s;margin-bottom:8px}
+  ol.steps li{counter-increment:s;display:flex;gap:12px;padding:9px 0;font-size:15px;line-height:1.45}
+  ol.steps li::before{content:counter(s);flex:none;width:22px;height:22px;border-radius:50%;background:var(--soft);font-size:12px;font-weight:600;display:grid;place-items:center;margin-top:1px}
+  code{font-family:ui-monospace,Menlo,monospace;font-weight:700;background:var(--soft);padding:1px 6px;border-radius:5px}
+  .or{font-size:13px;color:var(--muted);text-align:center;margin:20px 0 4px}
+
+  /* inputs */
+  input{width:100%;border:0;border-bottom:1px solid var(--line);padding:14px 0;font:inherit;font-size:16px;background:transparent;border-radius:0}
+  input:focus{outline:none;border-color:var(--text)}
+  input::placeholder{color:#b5b5ba}
+
+  /* faq */
+  details{border-bottom:1px solid var(--line)}
+  details:first-of-type{border-top:1px solid var(--line)}
+  summary{list-style:none;padding:17px 0;font-size:16px;font-weight:500;display:flex;justify-content:space-between;cursor:pointer}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"+";color:var(--muted)}
+  details[open] summary::after{content:"−"}
+  details p{color:var(--muted);font-size:14px;line-height:1.55;padding-bottom:16px}
+
+  .ticket{text-align:center;font-family:ui-monospace,Menlo,monospace;font-size:26px;font-weight:700;margin:26px 0 8px}
+  footer{text-align:center;font-size:11px;color:#c7c7cc;margin-top:40px}
+</style>
+<style>
+  .top-r{display:flex;align-items:center;gap:2px}
+  .lang button{font-size:12px;font-weight:600;color:#c7c7cc;padding:6px 7px;border-radius:8px}
+  .lang button.sel{color:var(--text);background:var(--soft)}
+  .statusline{margin:-14px 0 22px 56px}
+  .video{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;text-decoration:none;margin:2px 0 6px}
+  .video::before{content:"▶";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--grad);color:#fff;font-size:10px;padding-left:2px}
+  .video[hidden]{display:none}
+  .rate{display:flex;align-items:center;gap:8px;font-size:14px;margin:0 0 14px;padding:10px 14px;border-radius:12px;background:linear-gradient(90deg,rgba(255,158,52,.12),rgba(255,64,111,.12))}
+  .rate[hidden]{display:none}
+  .reply{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--muted);margin-top:16px}
+  .reply::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--ok)}
+  .offers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+  .offer{position:relative;text-align:left;border-radius:16px;padding:14px 14px 13px;background:var(--soft);overflow:hidden}
+  .offer::before{content:"";position:absolute;inset:0;border-radius:16px;padding:1.5px;background:var(--grad);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+  .offer .ot{font-size:11px;font-weight:700;letter-spacing:.06em;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .offer .oh{display:block;font-size:15px;font-weight:700;margin-top:4px;line-height:1.3}
+  .devices{margin:30px 0 4px;text-align:center}
+  .devices svg{width:100%;max-width:340px;height:auto}
+  .devices p{font-size:12px;color:var(--muted);margin-top:4px}
+  .hero{font-size:24px;font-weight:700;letter-spacing:-.5px;line-height:1.25;margin-bottom:18px}
+  .hero b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  ul.perks{list-style:none;border-top:1px solid var(--line);margin-bottom:18px}
+  ul.perks li{display:flex;gap:10px;align-items:flex-start;padding:13px 0;border-bottom:1px solid var(--line);font-size:15px}
+  ul.perks li::before{content:"✓";font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px}
+  .stats div{background:var(--soft);border-radius:14px;padding:14px;text-align:center}
+  .stats b{display:block;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stats span{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <img src="data:image/png;base64,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" alt="4K Clarity">
+    <div class="lang" id="lang">
+      <button data-lang="en">EN</button><button data-lang="es">ES</button><button data-lang="fr">FR</button>
+    </div>
+  </div>
+
+  <div class="sophie">
+    <svg viewBox="0 0 44 44" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9e34"/><stop offset="1" stop-color="#ff406f"/></linearGradient>
+        <clipPath id="c"><circle cx="22" cy="22" r="22"/></clipPath>
+      </defs>
+      <circle cx="22" cy="22" r="22" fill="url(#g)"/>
+      <g clip-path="url(#c)">
+        <path d="M10 24c0-10 5-15 12-15s12 5 12 15v14H10z" fill="#2b1a12"/>
+        <path d="M7 46c1-8 7-12 15-12s14 4 15 12z" fill="#111"/>
+        <ellipse cx="22" cy="22" rx="8" ry="9" fill="#f4c6a1"/>
+        <g class="eyes"><circle cx="19" cy="22" r="1.2" fill="#2a1a12"/><circle cx="25" cy="22" r="1.2" fill="#2a1a12"/></g>
+        <path d="M19.5 26q2.5 2 5 0" stroke="#b2463a" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+        <path d="M13.5 20c1-6 5-9 9-9s8 3 8.5 8.5c-3.5-.5-6.5-2.5-8.5-5-2 3-5 5-9 5.5z" fill="#3b2418"/>
+        <circle cx="22" cy="8" r="3.6" fill="#3b2418"/>
+        <path d="M12.5 22c0-7 4-11.5 9.5-11.5s9.5 4.5 9.5 11.5" fill="none" stroke="#111" stroke-width="1.5"/>
+        <rect x="11" y="20" width="3" height="5.5" rx="1.5" fill="#111"/>
+        <rect x="30" y="20" width="3" height="5.5" rx="1.5" fill="#111"/>
+        <path d="M13 25q1 4.5 5 4.5" fill="none" stroke="#111" stroke-width="1"/>
+      </g>
+    </svg>
+    <div class="say" id="say"></div>
+  </div>
+  <div class="status statusline" id="status"><i></i><span id="statusText"></span></div>
+
+  <!-- HOME -->
+  <section class="view on" id="v-home">
+    <div class="list">
+      <button class="row" data-go="v-plan" data-t="renew"></button>
+      <button class="row" data-go="v-trial" data-t="trial"></button>
+      <button class="row" data-go="v-issue" data-t="issue"></button>
+      <button class="row" data-go="v-faq" data-t="faq"></button>
+    </div>
+    <div class="offers">
+      <button class="offer" data-go="v-vip"><span class="ot">VIP</span><span class="oh" data-t="vipCard"></span></button>
+      <button class="offer" data-go="v-refer"><span class="ot" data-t="referTag"></span><span class="oh" data-t="referCard"></span></button>
+    </div>
+    <div class="devices" aria-hidden="true">
+      <svg viewBox="0 0 340 150">
+        <defs>
+          <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff9e34"/><stop offset="1" stop-color="#ff406f"/></linearGradient>
+        </defs>
+        <!-- sparkles -->
+        <g fill="#ffb15c"><path d="M30 30l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/><path d="M312 22l1.5 4.5 4.5 1.5-4.5 1.5-1.5 4.5-1.5-4.5-4.5-1.5 4.5-1.5z"/><circle cx="300" cy="120" r="2.5"/><circle cx="52" cy="118" r="2"/></g>
+        <!-- laptop -->
+        <g transform="translate(14 74)">
+          <rect x="8" y="0" width="70" height="46" rx="6" fill="#fff" stroke="#111" stroke-width="3"/>
+          <rect x="14" y="6" width="58" height="34" rx="3" fill="url(#sg)" opacity=".9"/>
+          <path d="M0 50h86l-6 8H6z" fill="#111"/>
+          <circle cx="36" cy="22" r="2" fill="#fff"/><circle cx="50" cy="22" r="2" fill="#fff"/><path d="M38 28q5 4 10 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+        <!-- TV (center, biggest) -->
+        <g transform="translate(108 14)">
+          <rect x="0" y="0" width="124" height="82" rx="10" fill="#fff" stroke="#111" stroke-width="3.5"/>
+          <rect x="8" y="8" width="108" height="66" rx="5" fill="url(#sg)"/>
+          <circle cx="48" cy="36" r="3.2" fill="#fff"/><circle cx="76" cy="36" r="3.2" fill="#fff"/>
+          <path d="M52 47q10 8 20 0" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <text x="96" y="66" font-family="Inter,sans-serif" font-weight="800" font-size="12" fill="#fff" opacity=".9">4K</text>
+          <path d="M50 82l-8 16M74 82l8 16" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M36 99h52" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+        </g>
+        <!-- firestick + remote -->
+        <g transform="translate(140 118)">
+          <rect x="0" y="4" width="34" height="12" rx="5" fill="#111"/>
+          <rect x="30" y="7" width="8" height="6" rx="2" fill="#555"/>
+          <rect x="48" y="-2" width="14" height="30" rx="7" fill="#fff" stroke="#111" stroke-width="2.5"/>
+          <circle cx="55" cy="7" r="3" fill="url(#sg)"/>
+        </g>
+        <!-- tablet -->
+        <g transform="translate(246 52)">
+          <rect x="0" y="0" width="52" height="70" rx="8" fill="#fff" stroke="#111" stroke-width="3"/>
+          <rect x="6" y="7" width="40" height="52" rx="3" fill="url(#sg)" opacity=".9"/>
+          <path d="M22 26l10 7-10 7z" fill="#fff"/>
+          <circle cx="26" cy="64" r="2" fill="#111"/>
+        </g>
+        <!-- phone -->
+        <g transform="translate(300 78)">
+          <rect x="0" y="0" width="28" height="50" rx="6" fill="#fff" stroke="#111" stroke-width="3"/>
+          <rect x="4" y="6" width="20" height="36" rx="2" fill="url(#sg)" opacity=".9"/>
+          <path d="M10 20q4 3 8 0" stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="11" cy="15" r="1.4" fill="#fff"/><circle cx="17" cy="15" r="1.4" fill="#fff"/>
+        </g>
+      </svg>
+      <p data-t="worksOn"></p>
+    </div>
+  </section>
+
+  <!-- VIP -->
+  <section class="view" id="v-vip">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <p class="hero" data-t="vipHero"></p>
+    <ul class="perks" id="vipPerks"></ul>
+    <a class="btn grad" id="vipBtn" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-t="vipCta"></a>
+    <p class="hint" data-t="vipNote"></p>
+  </section>
+
+  <!-- REFER -->
+  <section class="view" id="v-refer">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <p class="hero" data-t="referHero"></p>
+    <div class="stats">
+      <div><b>10%</b><span data-t="statFriend"></span></div>
+      <div><b data-t="statMo"></b><span data-t="statYou"></span></div>
+    </div>
+    <a class="btn grad" id="referCode" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-t="referCta"></a>
+    <a class="btn line" id="referShare" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-t="referShare"></a>
+    <p class="hint" data-t="referNote"></p>
+  </section>
+
+  <!-- PLAN -->
+  <section class="view" id="v-plan">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <div class="stpwrap">
+      <div class="stp">
+        <span class="k" data-t="months"></span>
+        <div class="ctrl">
+          <button class="pm" data-k="m" data-d="-1" aria-label="−">−</button>
+          <span class="num" id="mVal"></span>
+          <button class="pm plus" id="mPlus" data-k="m" data-d="1" aria-label="+">+</button>
+        </div>
+      </div>
+      <button class="nudge" id="mNudge" data-k="m" data-d="1"></button>
+    </div>
+    <div class="stpwrap">
+      <div class="stp">
+        <span class="k" data-t="tvs"></span>
+        <div class="ctrl">
+          <button class="pm" data-k="t" data-d="-1" aria-label="−">−</button>
+          <span class="num" id="tVal"></span>
+          <button class="pm plus" id="tPlus" data-k="t" data-d="1" aria-label="+">+</button>
+        </div>
+      </div>
+      <button class="nudge" id="tNudge" data-k="t" data-d="1"></button>
+    </div>
+    <div class="price">
+      <span class="tag" id="pTag"></span>
+      <div class="big" id="pTotal"></div>
+      <div class="per" id="pPer"></div>
+      <div class="save" id="pSave"></div>
+      <div class="meter"><i id="meter"></i></div>
+    </div>
+    <button class="btn main" id="toPay"></button>
+  </section>
+
+  <!-- PAY -->
+  <section class="view" id="v-pay">
+    <button class="back" data-go="v-plan" data-t="back"></button>
+    <div class="chips" id="payMode"><button class="chip sel" data-mode="renew" data-t="mRenew"></button><button class="chip" data-mode="new" data-t="mNew"></button></div>
+    <div class="sum">
+      <div><span data-t="plan"></span><b id="sumPlan"></b></div>
+      <div><span data-t="total"></span><b class="t" id="sumTotal"></b></div>
+    </div>
+    <a class="btn grad" id="payBtn" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"></a>
+    <p class="hint" id="exactHint"></p>
+    <button class="link" data-go="v-refer" data-t="refer" style="width:100%"></button>
+  </section>
+
+  <!-- TRIAL -->
+  <section class="view" id="v-trial">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <div class="chips" id="trialDevs"></div>
+    <a class="video" id="trialVideo" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" hidden data-t="video"></a>
+    <ol class="steps" id="trialGuide"></ol>
+    <form id="trialForm">
+      <input id="trName" required autocomplete="name" data-ph="name">
+      <input id="trMac" required data-ph="mac" autocapitalize="off">
+      <input id="trKey" required data-ph="devKey" autocapitalize="off">
+      <button class="btn main" type="submit" data-t="reqTrial"></button>
+    </form>
+  </section>
+
+  <!-- ISSUE -->
+  <section class="view" id="v-issue">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <div class="list" id="issues"></div>
+  </section>
+
+  <!-- FIX + TICKET -->
+  <section class="view" id="v-ticket">
+    <button class="back" data-go="v-issue" data-t="back"></button>
+    <div class="chips" id="fixDevs" style="display:none"></div>
+    <a class="video" id="fixVideo" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" hidden data-t="video"></a>
+    <p class="rate" id="fixRate" hidden></p>
+    <ol class="steps" id="tips"></ol>
+    <p class="or" data-t="still"></p>
+    <form id="ticketForm">
+      <input id="tName" required autocomplete="name" data-ph="name">
+      <input id="tMac" data-ph="macOpt" autocapitalize="off">
+      <input id="tNote" data-ph="noteOpt">
+      <button class="btn main" type="submit" data-t="createTicket"></button>
+    </form>
+  </section>
+
+  <!-- DONE -->
+  <section class="view" id="v-done">
+    <div class="ticket" id="ticketId"></div>
+    <p class="hint" style="margin-bottom:22px" data-t="addShot"></p>
+    <a class="btn grad" id="sendTicket" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer" data-t="sendWa"></a>
+    <button class="btn line" data-go="v-home" data-t="done"></button>
+    <p class="reply" id="replyTime"></p>
+  </section>
+
+  <!-- FAQ -->
+  <section class="view" id="v-faq">
+    <button class="back" data-go="v-home" data-t="back"></button>
+    <div id="faqs"></div>
+    <a class="link" id="siteBtn" href="#" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">4kclarity.com</a>
+  </section>
+
+  <footer>4K Clarity</footer>
+</div>
+
+<script>
+/* ====== EDIT THESE ====== */
+const WHATSAPP = "16729046218";   // +1 (672) 904-6218
+const SITE     = "https://4kclarity.com";
+const STATUS   = { level: "ok" };          // ok | warn | down  (text comes from the language below)
+const REPLY_MINUTES = 60;                  // shown after a ticket: only promise what you can keep
+const PRICES = {
+  1:  [9.99, 16.99, 22.99, 27.99],
+  3:  [29.99, 44.99, 59.99, 74.99],
+  6:  [44.99, 84.99, 114.99, 139.99],
+  12: [69.99, 129.99, 179.99, 219.99]
+};
+const START_MONTHS = 3, START_TVS = 1;
+const REFER_URL = "https://4kclarity.com/refer";   // your Refer & Earn page
+const VIP_URL   = "";                              // VIP page link (empty = button opens WhatsApp)
+// Paste a YouTube link per device to show a "Watch video" button (empty = hidden)
+const VIDEOS = { Firestick: "", Samsung: "", LG: "", Android: "", iPhone: "" };
+const DEVICES = ["Firestick", "Samsung", "LG", "Android", "iPhone"];
+const STORE = { Firestick: "Downloader", Samsung: "Apps", LG: "LG Content Store", Android: "Play Store", iPhone: "App Store" };
+const DL = { Samsung: "shorturl.at/9YHA5", iPhone: "shorturl.at/l0xMQ", LG: "shorturl.at/QrYyi", Android: "shorturl.at/zioNr" };
+const dlLink = u => `<a href="https://${u}" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><code>${u}</code></a>`;
+
+/* ====== TEXT (EN / ES / FR) ====== */
+const I18N = {
+  en: {
+    statMo: "1 month",
+    worksOn: "Works on TV, Firestick, phone, tablet & computer",
+    vipCard: "Unlock VIP access", referTag: "REFER & EARN", referCard: "1 free month per friend",
+    vipHero: "VIP access · <b>no extra cost</b>",
+    vipPerks: ["More content", "Better streaming quality", "Add, remove & organize your channels", "Easy control from your phone"],
+    vipCta: "Activate VIP", vipNote: "Free for active members",
+    referHero: "Refer friends. <b>Watch for free.</b>",
+    statFriend: "off for your friend", statYou: "free for you, per friend",
+    referCta: "Get my referral code", referShare: "Share on WhatsApp", referNote: "No limits · credited after their first payment",
+    refer: "Refer a friend · <b>1 free month</b>",
+    referText: "I use 4K Clarity for TV 📺 Use my link and get 10% off your first plan: ",
+    vipMsg: "Hi! I'd like to activate VIP access.",
+    renew: "Renew or buy", trial: "Free trial", issue: "Something's not working", faq: "Questions", back: "← Back",
+    months: "Months", tvs: "TVs", plan: "Plan", total: "Total", pay: "Pay", paid: "Paid? Send screenshot",
+    exact: x => `Opens WhatsApp with your order · pay <b>${x}</b> with our payment link`,
+    mRenew: "I'm renewing", mNew: "New subscription",
+    order: (plan, x, n) => `Hi! I'd like to ${n ? "subscribe" : "renew"}:\n\n*Plan:* ${plan}\n*Total:* ${x}\n\n1. Pay ${x} with the payment link above\n2. Share the payment confirmation here`,
+    name: "Name", mac: "MAC address", devKey: "Device key", macKey: "MAC address + Device key", macOpt: "MAC address (optional)", noteOpt: "Note (optional)",
+    reqTrial: "Request trial", still: "Still not working?", fixRate: "✅ These steps fix <b>8 out of 10</b> problems. Takes 1 minute.", createTicket: "Create ticket",
+    addShot: "Add a screenshot in WhatsApp", sendWa: "Send on WhatsApp", done: "Done", video: "Watch video",
+    cont: "Continue", oneMonth: "one month", perMo: "/mo", perTv: "per TV", save: x => `You save ${x}`,
+    best: "BEST VALUE", savePct: p => `SAVE ${p}%`, bestOk: "Best value ✓", homeOk: "Whole home ✓",
+    moreM: (n, x) => `+${n} months for +${x} →`, moreT: x => `+1 TV for +${x} →`, moreTmo: x => `+1 TV for +${x}/mo →`,
+    mUnit: n => n === 1 ? "month" : "months", tUnit: n => n === 1 ? "TV" : "TVs",
+    status: { ok: "All servers OK", warn: "Maintenance in progress", down: "We're fixing an outage" },
+    reply: m => m >= 60 ? `We usually reply within ${m / 60 === 1 ? "1 hour" : m / 60 + " hours"}` : `We usually reply within ${m} min`,
+    hi: h => h < 12 ? "Good morning!" : h < 18 ? "Hi!" : "Good evening!",
+    says: { home: "I'm Sophie. How can I help?", plan: "Build your plan. More = <b>more savings</b>.", pay: "Almost done 🎉",
+      trial: "Let's get you watching 🍿", issue: "Sorry about that. What's wrong?", ticket: "Try this first.",
+      done: "Got it. Send it and I'm on it 🙌", faq: "Quick answers 💡", vip: "A little thank-you for our members 💎", refer: "Share the love, get free months 💛" },
+    react: { free: n => `Smart! That's like <b>${n} months free</b> 😍`, saved: x => `Nice, you save <b>${x}</b> 🙌`, allTv: "Every TV covered 🏠", tv: "More TVs, more fun 📺" },
+    issues: ["No signal", "Channels freezing", "Movie won't play", "New TV", "Can't install the app", "Something else"],
+    tips: [
+      ["Restart your TV and router", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>", "Turn off any VPN"],
+      ["Switch channel, then back", "Restart your TV and router", "Turn off any VPN"],
+      ["Close and reopen the app", "<b>Settings → Player</b> → try another player"],
+      null, null,
+      ["Restart your TV and router", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>"]
+    ],
+    guide: (dev, store) => dev === "Firestick"
+      ? [`Open <b>${store}</b>`, "Enter <code>481220</code> · install <b>IBO Player Pro</b>", "Open it · note <b>MAC</b> + <b>Device key</b>"]
+      : [`${store} → <b>IBO Player Pro</b>`, "Install and open it", "Note <b>MAC</b> + <b>Device key</b>"],
+    dl: u => `Type ${dlLink(u)} <b>exactly</b> in your browser to download the right app`,
+    sendBelow: "Send them below", sendNewMac: "Send the new MAC below", trialTag: "Trial",
+    faqs: [
+      ["Which app?", "IBO Player Pro. Send us the MAC address and Device key it shows."],
+      ["Where's my MAC?", "On the first screen of IBO Player Pro."],
+      ["New TV?", "Install IBO Player Pro, then open a ticket with the new MAC. Free when you renew."],
+      ["Not loading?", "Restart, then App → Playlist → 4KCLARITY → Connect. No VPN."],
+      ["How do I pay?", "Renew or buy → pick your plan → pay by card → send the screenshot."]
+    ],
+  },
+  es: {
+    statMo: "1 mes",
+    worksOn: "Funciona en TV, Firestick, celular, tablet y computadora",
+    vipCard: "Activa el acceso VIP", referTag: "RECOMIENDA Y GANA", referCard: "1 mes gratis por amigo",
+    vipHero: "Acceso VIP · <b>sin costo extra</b>",
+    vipPerks: ["Más contenido", "Mejor calidad de imagen", "Agrega, quita y ordena tus canales", "Control fácil desde tu celular"],
+    vipCta: "Activar VIP", vipNote: "Gratis para miembros activos",
+    referHero: "Recomienda amigos. <b>Mira gratis.</b>",
+    statFriend: "de descuento para tu amigo", statYou: "gratis para ti, por amigo",
+    referCta: "Obtener mi código", referShare: "Compartir por WhatsApp", referNote: "Sin límites · se acredita tras su primer pago",
+    refer: "Recomienda a un amigo · <b>1 mes gratis</b>",
+    referText: "Uso 4K Clarity para ver TV 📺 Usa mi enlace y obtén 10% de descuento: ",
+    vipMsg: "¡Hola! Quiero activar el acceso VIP.",
+    renew: "Renovar o comprar", trial: "Prueba gratis", issue: "Algo no funciona", faq: "Preguntas", back: "← Atrás",
+    months: "Meses", tvs: "TVs", plan: "Plan", total: "Total", pay: "Pagar", paid: "¿Pagaste? Envía la captura",
+    exact: x => `Abre WhatsApp con tu pedido · paga <b>${x}</b> con nuestro enlace de pago`,
+    mRenew: "Renuevo", mNew: "Nueva suscripción",
+    order: (plan, x, n) => `¡Hola! Quiero ${n ? "suscribirme" : "renovar"}:\n\n*Plan:* ${plan}\n*Total:* ${x}\n\n1. Pagar ${x} con el enlace de pago de arriba\n2. Compartir la confirmación de pago aquí`,
+    name: "Nombre", mac: "Dirección MAC", devKey: "Device key", macKey: "Dirección MAC + Device key", macOpt: "Dirección MAC (opcional)", noteOpt: "Nota (opcional)",
+    reqTrial: "Pedir prueba", still: "¿Sigue sin funcionar?", fixRate: "✅ Estos pasos resuelven <b>8 de cada 10</b> problemas. Toma 1 minuto.", createTicket: "Crear ticket",
+    addShot: "Agrega una captura en WhatsApp", sendWa: "Enviar por WhatsApp", done: "Listo", video: "Ver video",
+    cont: "Continuar", oneMonth: "un mes", perMo: "/mes", perTv: "por TV", save: x => `Ahorras ${x}`,
+    best: "MEJOR PRECIO", savePct: p => `AHORRA ${p}%`, bestOk: "Mejor precio ✓", homeOk: "Toda la casa ✓",
+    moreM: (n, x) => `+${n} meses por +${x} →`, moreT: x => `+1 TV por +${x} →`, moreTmo: x => `+1 TV por +${x}/mes →`,
+    mUnit: n => n === 1 ? "mes" : "meses", tUnit: n => n === 1 ? "TV" : "TVs",
+    status: { ok: "Servidores OK", warn: "Mantenimiento en curso", down: "Estamos arreglando una falla" },
+    reply: m => m >= 60 ? `Solemos responder en ${m / 60 === 1 ? "1 hora" : m / 60 + " horas"}` : `Solemos responder en ${m} min`,
+    hi: h => h < 12 ? "¡Buenos días!" : h < 19 ? "¡Hola!" : "¡Buenas noches!",
+    says: { home: "Soy Sophie. ¿Cómo te ayudo?", plan: "Arma tu plan. Más = <b>más ahorro</b>.", pay: "Casi listo 🎉",
+      trial: "¡A ver TV! 🍿", issue: "Lo siento. ¿Qué pasa?", ticket: "Prueba esto primero.",
+      done: "Listo. Envíalo y me encargo 🙌", faq: "Respuestas rápidas 💡", vip: "Un regalo para nuestros miembros 💎", refer: "Comparte y gana meses gratis 💛" },
+    react: { free: n => `¡Bien! Es como <b>${n} meses gratis</b> 😍`, saved: x => `¡Genial, ahorras <b>${x}</b>! 🙌`, allTv: "Todas las TVs cubiertas 🏠", tv: "Más TVs, más diversión 📺" },
+    issues: ["Sin señal", "Canales congelados", "La película no carga", "TV nueva", "No puedo instalar la app", "Otro problema"],
+    tips: [
+      ["Reinicia tu TV y el router", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>", "Apaga cualquier VPN"],
+      ["Cambia de canal y regresa", "Reinicia tu TV y el router", "Apaga cualquier VPN"],
+      ["Cierra y abre la app", "<b>Settings → Player</b> → prueba otro reproductor"],
+      null, null,
+      ["Reinicia tu TV y el router", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>"]
+    ],
+    guide: (dev, store) => dev === "Firestick"
+      ? [`Abre <b>${store}</b>`, "Escribe <code>481220</code> · instala <b>IBO Player Pro</b>", "Ábrela · anota <b>MAC</b> + <b>Device key</b>"]
+      : [`${store} → <b>IBO Player Pro</b>`, "Instálala y ábrela", "Anota <b>MAC</b> + <b>Device key</b>"],
+    dl: u => `Escribe ${dlLink(u)} <b>exactamente</b> en tu navegador para descargar la app correcta`,
+    sendBelow: "Envíalos abajo", sendNewMac: "Envía la nueva MAC abajo", trialTag: "Prueba",
+    faqs: [
+      ["¿Qué app uso?", "IBO Player Pro. Envíanos la dirección MAC y el Device key que muestra."],
+      ["¿Dónde está mi MAC?", "En la primera pantalla de IBO Player Pro."],
+      ["¿TV nueva?", "Instala IBO Player Pro y crea un ticket con la nueva MAC. Gratis al renovar."],
+      ["¿No carga?", "Reinicia, luego App → Playlist → 4KCLARITY → Connect. Sin VPN."],
+      ["¿Cómo pago?", "Renovar o comprar → elige tu plan → paga con tarjeta → envía la captura."]
+    ],
+  },
+  fr: {
+    statMo: "1 mois",
+    worksOn: "Sur télé, Firestick, téléphone, tablette et ordinateur",
+    vipCard: "Débloquez l'accès VIP", referTag: "PARRAINAGE", referCard: "1 mois offert par ami",
+    vipHero: "Accès VIP · <b>sans frais</b>",
+    vipPerks: ["Plus de contenu", "Meilleure qualité d'image", "Ajoutez, retirez et classez vos chaînes", "Contrôle facile depuis votre téléphone"],
+    vipCta: "Activer le VIP", vipNote: "Offert aux membres actifs",
+    referHero: "Parrainez vos amis. <b>Regardez gratuitement.</b>",
+    statFriend: "de remise pour votre ami", statYou: "offert pour vous, par ami",
+    referCta: "Obtenir mon code", referShare: "Partager sur WhatsApp", referNote: "Sans limite · crédité après son premier paiement",
+    refer: "Parrainez un ami · <b>1 mois offert</b>",
+    referText: "J'utilise 4K Clarity pour la télé 📺 Avec mon lien, 10 % de remise : ",
+    vipMsg: "Bonjour ! Je voudrais activer l'accès VIP.",
+    renew: "Renouveler ou acheter", trial: "Essai gratuit", issue: "Quelque chose ne marche pas", faq: "Questions", back: "← Retour",
+    months: "Mois", tvs: "Télés", plan: "Forfait", total: "Total", pay: "Payer", paid: "Payé ? Envoyez la capture",
+    exact: x => `Ouvre WhatsApp avec votre commande · payez <b>${x}</b> avec notre lien de paiement`,
+    mRenew: "Je renouvelle", mNew: "Nouvel abonnement",
+    order: (plan, x, n) => `Bonjour ! Je voudrais ${n ? "m'abonner" : "renouveler"} :\n\n*Forfait :* ${plan}\n*Total :* ${x}\n\n1. Payer ${x} avec le lien de paiement ci-dessus\n2. Partager la confirmation de paiement ici`,
+    name: "Nom", mac: "Adresse MAC", devKey: "Device key", macKey: "Adresse MAC + Device key", macOpt: "Adresse MAC (facultatif)", noteOpt: "Note (facultatif)",
+    reqTrial: "Demander l'essai", still: "Toujours un problème ?", fixRate: "✅ Ces étapes règlent <b>8 problèmes sur 10</b>. Ça prend 1 minute.", createTicket: "Créer un ticket",
+    addShot: "Ajoutez une capture dans WhatsApp", sendWa: "Envoyer sur WhatsApp", done: "Terminé", video: "Voir la vidéo",
+    cont: "Continuer", oneMonth: "un mois", perMo: "/mois", perTv: "par télé", save: x => `Vous économisez ${x}`,
+    best: "MEILLEUR PRIX", savePct: p => `−${p} %`, bestOk: "Meilleur prix ✓", homeOk: "Toute la maison ✓",
+    moreM: (n, x) => `+${n} mois pour +${x} →`, moreT: x => `+1 télé pour +${x} →`, moreTmo: x => `+1 télé pour +${x}/mois →`,
+    mUnit: n => "mois", tUnit: n => n === 1 ? "télé" : "télés",
+    status: { ok: "Serveurs OK", warn: "Maintenance en cours", down: "Panne en cours de réparation" },
+    reply: m => m >= 60 ? `Réponse habituelle en ${m / 60 === 1 ? "1 heure" : m / 60 + " heures"}` : `Réponse habituelle en ${m} min`,
+    hi: h => h < 18 ? "Bonjour !" : "Bonsoir !",
+    says: { home: "Je suis Sophie. Je peux vous aider ?", plan: "Composez votre forfait. Plus = <b>plus d'économies</b>.", pay: "Presque fini 🎉",
+      trial: "C'est parti 🍿", issue: "Désolée. Quel est le souci ?", ticket: "Essayez d'abord ceci.",
+      done: "C'est noté. Envoyez et je m'en occupe 🙌", faq: "Réponses rapides 💡", vip: "Un petit cadeau pour nos membres 💎", refer: "Partagez et gagnez des mois offerts 💛" },
+    react: { free: n => `Bien joué ! C'est comme <b>${n} mois offerts</b> 😍`, saved: x => `Super, vous économisez <b>${x}</b> 🙌`, allTv: "Toutes les télés couvertes 🏠", tv: "Plus de télés, plus de plaisir 📺" },
+    issues: ["Pas de signal", "Chaînes figées", "Le film ne démarre pas", "Nouvelle télé", "Impossible d'installer l'app", "Autre problème"],
+    tips: [
+      ["Redémarrez la télé et la box", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>", "Désactivez tout VPN"],
+      ["Changez de chaîne puis revenez", "Redémarrez la télé et la box", "Désactivez tout VPN"],
+      ["Fermez et rouvrez l'app", "<b>Settings → Player</b> → essayez un autre lecteur"],
+      null, null,
+      ["Redémarrez la télé et la box", "App → <b>Playlist</b> → <b>4KCLARITY</b> → <b>Connect</b>"]
+    ],
+    guide: (dev, store) => dev === "Firestick"
+      ? [`Ouvrez <b>${store}</b>`, "Tapez <code>481220</code> · installez <b>IBO Player Pro</b>", "Ouvrez-la · notez <b>MAC</b> + <b>Device key</b>"]
+      : [`${store} → <b>IBO Player Pro</b>`, "Installez-la et ouvrez-la", "Notez <b>MAC</b> + <b>Device key</b>"],
+    dl: u => `Tapez ${dlLink(u)} <b>exactement</b> dans votre navigateur pour télécharger la bonne app`,
+    sendBelow: "Envoyez-les ci-dessous", sendNewMac: "Envoyez la nouvelle MAC ci-dessous", trialTag: "Essai",
+    faqs: [
+      ["Quelle app ?", "IBO Player Pro. Envoyez-nous l'adresse MAC et le Device key affichés."],
+      ["Où est ma MAC ?", "Sur le premier écran d'IBO Player Pro."],
+      ["Nouvelle télé ?", "Installez IBO Player Pro, puis créez un ticket avec la nouvelle MAC. Gratuit si vous renouvelez."],
+      ["Ça ne charge pas ?", "Redémarrez, puis App → Playlist → 4KCLARITY → Connect. Sans VPN."],
+      ["Comment payer ?", "Renouveler ou acheter → choisissez → payez par carte → envoyez la capture."]
+    ],
+  }
+};
+
+/* ====== CORE ====== */
+const $ = id => document.getElementById(id);
+const money = n => "$" + n.toFixed(2);
+const wa = t => `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(t)}`;
+let lang = "en", L = I18N.en, current = "v-home";
+try { lang = localStorage.getItem("4kc-lang") || ""; } catch (e) {}
+if (!I18N[lang]) lang = (navigator.language || "en").slice(0, 2);
+if (!I18N[lang]) lang = "en";
+
+const VKEY = { "v-vip": "vip", "v-refer": "refer", "v-home": "home", "v-plan": "plan", "v-pay": "pay", "v-trial": "trial", "v-issue": "issue", "v-ticket": "ticket", "v-done": "done", "v-faq": "faq" };
+let sayTimer;
+function sayFor(id){ return (id === "v-home" ? L.hi(new Date().getHours()) + " " : "") + L.says[VKEY[id]]; }
+function speak(id){
+  clearTimeout(sayTimer);
+  $("say").innerHTML = '<span class="dots"><i></i><i></i><i></i></span>';
+  sayTimer = setTimeout(() => $("say").innerHTML = sayFor(id), 550);
+}
+function say(html){ clearTimeout(sayTimer); $("say").innerHTML = html; }
+function go(id){
+  current = id;
+  document.querySelectorAll(".view").forEach(v => v.classList.toggle("on", v.id === id));
+  speak(id); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
+
+/* ====== PLAN (+/−) ====== */
+const MONTHS = Object.keys(PRICES).map(Number).sort((a, b) => a - b), MAX_TV = 4;
+let mi = Math.max(0, MONTHS.indexOf(START_MONTHS)), tv = START_TVS, order = {};
+const price = (m, t) => PRICES[m][t - 1];
+const saving = (m, t) => price(1, t) * m - price(m, t);
+const pct = (m, t) => saving(m, t) / (price(1, t) * m);
+const MAX_PCT = Math.max(...MONTHS.flatMap(m => [1, 2, 3, 4].map(t => pct(m, t))));
+let shown = 0;
+function countTo(el, to){
+  const from = shown, t0 = performance.now();
+  (function step(now){
+    const k = Math.min(1, (now - t0) / 350);
+    el.textContent = money(from + (to - from) * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(step); else shown = to;
+  })(t0);
+}
+function renderPlan(changed){
+  const m = MONTHS[mi], total = price(m, tv), s = saving(m, tv), p = pct(m, tv);
+  $("mVal").textContent = m; $("tVal").textContent = tv;
+  if (changed) { const n = $(changed + "Val"); n.classList.remove("pop"); void n.offsetWidth; n.classList.add("pop"); }
+  document.querySelector('[data-k="m"][data-d="-1"]').disabled = mi === 0;
+  document.querySelector('[data-k="t"][data-d="-1"]').disabled = tv === 1;
+  $("mPlus").disabled = mi === MONTHS.length - 1;
+  $("tPlus").disabled = tv === MAX_TV;
+  if (mi < MONTHS.length - 1) { const nm = MONTHS[mi + 1]; $("mNudge").className = "nudge"; $("mNudge").textContent = L.moreM(nm - m, money(price(nm, tv) - total)); }
+  else { $("mNudge").className = "nudge max"; $("mNudge").textContent = L.bestOk; }
+  if (tv < MAX_TV) { const x = price(m, tv + 1) - total; $("tNudge").className = "nudge"; $("tNudge").textContent = m === 1 ? L.moreT(money(x)) : L.moreTmo(money(x / m)); }
+  else { $("tNudge").className = "nudge max"; $("tNudge").textContent = L.homeOk; }
+  countTo($("pTotal"), total);
+  $("pPer").textContent = m === 1 ? L.oneMonth : money(total / m) + L.perMo + (tv > 1 ? ` · ${money(total / m / tv)} ${L.perTv}` : "");
+  $("pSave").textContent = s > 0.5 ? L.save(money(s)) : "";
+  $("pTag").textContent = mi === MONTHS.length - 1 ? L.best : (p > 0.05 ? L.savePct(Math.round(p * 100)) : "");
+  $("meter").style.width = Math.max(0, Math.round(p / MAX_PCT * 100)) + "%";
+  $("toPay").textContent = `${L.cont} · ${money(total)}`;
+  order = { m, tv, total };
+}
+$("v-plan").addEventListener("click", e => {
+  const b = e.target.closest("[data-k]");
+  if (!b || b.disabled || b.classList.contains("max")) return;
+  const d = +b.dataset.d, k = b.dataset.k;
+  if (k === "m") mi = Math.max(0, Math.min(MONTHS.length - 1, mi + d));
+  else tv = Math.max(1, Math.min(MAX_TV, tv + d));
+  renderPlan(k);
+  if (d > 0) {
+    const m = MONTHS[mi], s = saving(m, tv);
+    if (k === "m" && mi === MONTHS.length - 1) say(L.react.free(Math.floor(s / price(1, tv))));
+    else if (k === "m" && s > 0.5) say(L.react.saved(money(s)));
+    else if (k === "t" && tv === MAX_TV) say(L.react.allTv);
+    else if (k === "t") say(L.react.tv);
+  }
+});
+function renderPay(){
+  const { m, tv: t, total } = order;
+  $("sumPlan").textContent = `${m} ${L.mUnit(m)} · ${t} ${L.tUnit(t)}`;
+  $("sumTotal").textContent = money(total);
+  $("exactHint").innerHTML = L.exact(money(total));
+  $("payBtn").textContent = `${L.pay} ${money(total)}`;
+  const cap = w => w.charAt(0).toUpperCase() + w.slice(1);
+  $("payBtn").href = wa(L.order(`${m} ${cap(L.mUnit(m))} – ${t} ${cap(L.tUnit(t))}`, money(total), payNew));
+  document.querySelectorAll("#payMode .chip").forEach(c => c.classList.toggle("sel", (c.dataset.mode === "new") === payNew));
+}
+let payNew = false;
+$("payMode").addEventListener("click", e => { const c = e.target.closest(".chip"); if (!c) return; payNew = c.dataset.mode === "new"; renderPay(); });
+$("toPay").addEventListener("click", () => { renderPay(); go("v-pay"); });
+
+/* ====== GUIDES (+ video) ====== */
+const guideState = {};
+function renderGuide(chipsId, listId, videoId, dev, tailKey){
+  guideState[chipsId] = { listId, videoId, dev, tailKey };
+  $(chipsId).innerHTML = DEVICES.map(d => `<button type="button" class="chip${d === dev ? " sel" : ""}" data-dev="${d}">${d}</button>`).join("");
+  const base = L.guide(dev, STORE[dev]);
+  if (chipsId === "trialDevs" && DL[dev]) base[0] = `<span>${L.dl(DL[dev])}</span>`;
+  const steps = base.concat(tailKey ? [L[tailKey]] : []);
+  $(listId).innerHTML = steps.map(s => `<li>${s}</li>`).join("");
+  const v = $(videoId);
+  if (VIDEOS[dev]) { v.href = VIDEOS[dev]; v.hidden = false; } else v.hidden = true;
+}
+["fixDevs", "trialDevs"].forEach(id => $(id).addEventListener("click", e => {
+  const c = e.target.closest("[data-dev]"); if (!c) return;
+  const g = guideState[id]; renderGuide(id, g.listId, g.videoId, c.dataset.dev, g.tailKey);
+}));
+
+/* ====== TRIAL ====== */
+$("trialForm").addEventListener("submit", e => {
+  e.preventDefault();
+  $("ticketId").textContent = L.trialTag;
+  $("sendTicket").href = wa(`Free trial\nName: ${$("trName").value.trim()}\nDevice: ${guideState.trialDevs.dev}\nMAC: ${$("trMac").value.trim()}\nDevice key: ${$("trKey").value.trim()}`);
+  go("v-done");
+});
+
+/* ====== ISSUES ====== */
+let issueIdx = 0;
+function renderIssues(){ $("issues").innerHTML = L.issues.map((t, i) => `<button class="row" data-i="${i}">${t}</button>`).join(""); }
+function renderTips(){
+  const i = issueIdx;
+  $("fixRate").innerHTML = L.fixRate; $("fixRate").hidden = !L.tips[i];
+  if (L.tips[i]) { $("fixDevs").style.display = "none"; $("fixVideo").hidden = true; $("tips").innerHTML = L.tips[i].map(t => `<li>${t}</li>`).join(""); }
+  else { $("fixDevs").style.display = "flex"; renderGuide("fixDevs", "tips", "fixVideo", guideState.fixDevs?.dev || "Firestick", i === 3 ? "sendNewMac" : ""); }
+}
+$("issues").addEventListener("click", e => {
+  const b = e.target.closest("[data-i]"); if (!b) return;
+  issueIdx = +b.dataset.i; renderTips(); go("v-ticket");
+});
+$("ticketForm").addEventListener("submit", e => {
+  e.preventDefault();
+  const id = "T-" + Date.now().toString(36).slice(-5).toUpperCase();
+  const lines = [`Ticket ${id}`, `Issue: ${I18N.en.issues[issueIdx]}`, `Name: ${$("tName").value.trim()}`];
+  if ($("tMac").value.trim()) lines.push(`MAC: ${$("tMac").value.trim()}`);
+  if ($("tNote").value.trim()) lines.push(`Note: ${$("tNote").value.trim()}`);
+  lines.push(`Language: ${lang.toUpperCase()}`);
+  $("ticketId").textContent = id;
+  $("sendTicket").href = wa(lines.join("\n"));
+  go("v-done");
+});
+
+/* ====== LANGUAGE ====== */
+function applyLang(l){
+  lang = l; L = I18N[l];
+  try { localStorage.setItem("4kc-lang", l); } catch (e) {}
+  document.documentElement.lang = l;
+  document.querySelectorAll("[data-lang]").forEach(b => b.classList.toggle("sel", b.dataset.lang === l));
+  document.querySelectorAll("[data-t]").forEach(el => el.innerHTML = L[el.dataset.t]);
+  document.querySelectorAll("[data-ph]").forEach(el => el.placeholder = L[el.dataset.ph]);
+  $("statusText").textContent = L.status[STATUS.level];
+  $("replyTime").textContent = L.reply(REPLY_MINUTES);
+  $("faqs").innerHTML = L.faqs.map(([q, a]) => `<details><summary>${q}</summary><p>${a}</p></details>`).join("");
+  $("vipPerks").innerHTML = L.vipPerks.map(p => `<li>${p}</li>`).join("");
+  $("vipBtn").href = VIP_URL || wa(L.vipMsg);
+  $("referCode").href = REFER_URL;
+  $("referShare").href = "https://wa.me/?text=" + encodeURIComponent(L.referText + REFER_URL);
+  renderIssues(); renderPlan();
+  renderGuide("trialDevs", "trialGuide", "trialVideo", guideState.trialDevs?.dev || "Firestick", "sendBelow");
+  if (current === "v-ticket") renderTips();
+  if (current === "v-pay") renderPay();
+  if (current !== "v-done") say(sayFor(current));
+}
+$("lang").addEventListener("click", e => { const b = e.target.closest("[data-lang]"); if (b) applyLang(b.dataset.lang); });
+
+$("siteBtn").href = SITE;
+$("status").className = "status statusline " + STATUS.level;
+applyLang(lang);
+speak("v-home");
+</script>
+</body>
+</html>
