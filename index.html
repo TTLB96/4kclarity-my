@@ -377,11 +377,13 @@ const WHATSAPP = "16729046218";   // +1 (672) 904-6218
 const SITE     = "https://4kclarity.com";
 const STATUS   = { level: "ok" };          // ok | warn | down  (text comes from the language below)
 const REPLY_MINUTES = 60;                  // shown after a ticket: only promise what you can keep
+// Columns = 1, 2, 3, 4, 5 TVs. Each extra TV costs less than the one before (Solo x TVs^0.75).
 const PRICES = {
-  1:  [9.99, 16.99, 22.99, 27.99],
-  3:  [29.99, 44.99, 59.99, 74.99],
-  6:  [44.99, 84.99, 114.99, 139.99],
-  12: [69.99, 129.99, 179.99, 219.99]
+  1:  [12.99, 21.99, 29.99, 36.99, 43.99],
+  3:  [29.99, 49.99, 67.99, 84.99, 99.99],
+  6:  [44.99, 74.99, 102.99, 126.99, 149.99],
+  12: [69.99, 119.99, 159.99, 199.99, 234.99],
+  24: [119.99, 199.99, 269.99, 339.99, 399.99]
 };
 const START_MONTHS = 3, START_TVS = 1;
 const REFER_URL = "https://4kclarity.com/refer";   // your Refer & Earn page
@@ -582,12 +584,12 @@ function go(id){
 document.addEventListener("click", e => { const b = e.target.closest("[data-go]"); if (b) go(b.dataset.go); });
 
 /* ====== PLAN (+/−) ====== */
-const MONTHS = Object.keys(PRICES).map(Number).sort((a, b) => a - b), MAX_TV = 4;
+const MONTHS = Object.keys(PRICES).map(Number).sort((a, b) => a - b), MAX_TV = PRICES[1].length;
 let mi = Math.max(0, MONTHS.indexOf(START_MONTHS)), tv = START_TVS, order = {};
 const price = (m, t) => PRICES[m][t - 1];
 const saving = (m, t) => price(1, t) * m - price(m, t);
 const pct = (m, t) => saving(m, t) / (price(1, t) * m);
-const MAX_PCT = Math.max(...MONTHS.flatMap(m => [1, 2, 3, 4].map(t => pct(m, t))));
+const MAX_PCT = Math.max(...MONTHS.flatMap(m => PRICES[1].map((_, i) => pct(m, i + 1))));
 let shown = 0;
 function countTo(el, to){
   const from = shown, t0 = performance.now();
